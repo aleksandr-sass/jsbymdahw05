@@ -1,0 +1,7 @@
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+.form__element {
+    margin-bottom: 20px;
+}
