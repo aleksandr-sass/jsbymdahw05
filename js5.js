@@ -37,6 +37,8 @@ for (const el of liElements) {
     }
 }
 //*************************** */
+const form = document.querySelector('.form')
+
 const widthArea = document.querySelector('#widthArea')
 const lengthArea = document.querySelector('#lengthArea')
 const squareArea = document.querySelector('#squareArea')
@@ -73,6 +75,7 @@ function launcher() {
     } else {
         total =  squareArea * 40
     }
+    checkBoxValueHandler();
     if (discount.checked == true) total = Math.round(total * 0.95);
     payment.value = total;
     countInput.value = numberOfPlates();
@@ -81,15 +84,9 @@ function launcher() {
 
 function recalculateDataObject() {
     if (inputDataIsOK()) {
-        data = {
-            width : +widthArea.value,
-            length : +lengthArea.value,
-            square : +squareArea.value,
-            color : colorPlate.value,
-            total : +payment.value,
-            numberOfPlates: +countInput.value,
-            totalWithDiscount : discount.checked 
-        };
+        form
+            .querySelectorAll('[id]')
+            .forEach((el) => data[el.id] = el.value);
         showDataObjectInConsole();
     } else {
         alert('Проверьте исходные данные: ширину и длину участка');
@@ -117,7 +114,13 @@ function inputDataIsOK() {
     }
 }
 
-// console.log(widthArea);
+function checkBoxValueHandler() {
+    if (discount.checked == true) {
+        discount.value = true;
+    } else {
+        discount.value = false;
+    }
+}
 
 // Решение ДЗ
 // Часть 1. Подсчёт количества плиток
@@ -148,10 +151,18 @@ function inputDataIsOK() {
 
 
 /* Часть 3. Создание объекта на основе данных формы
-Объявим в начале кода пустой объект data = {};
-Объявим несколько функций:
-* inputDataIsOK() - проверит длину и ширину участка на корректность; 
-* recalculateDataObject() - пересчитает поля объекта data
+0) Добавим форме, содержащей все нужные input'ы, атрибут class="form"
+
+I) Объявим в начале кода переменные/константы:
+let data = {}; // пустой объект
+const form = document.querySelector('.form') // указатель на форму
+ 
+II) Объявим несколько функций (в конце кода):
+* recalculateDataObject() - считает данные формы и  заполнит поля объекта data
 * showDataObjectInConsole() - "красиво" отобразит объект data в консоль
-Добавим в функцию launcher() вызов функции recalculateDataObject()
+* inputDataIsOK() - проверит длину и ширину участка на корректность; 
+* checkBoxValueHandler() - меняет value у checkbox'а с "on" (по умолчанию) на true (при discount.checked == true) или false (при discount.checked == false). Это нужно для упрощения обработки данных формы, т.к. в противном случае придётся отдельно обрабатывать поле cheched у checkbox'а с id="discount".
+
+III) Добавим в функцию launcher() вызовы функций checkBoxValueHandler() и recalculateDataObject()
+
 */
